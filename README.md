@@ -1,2 +1,2 @@
 # trainingjob-operator
-training job operator for Kubernetes
+training job operator for Kubernetes.
