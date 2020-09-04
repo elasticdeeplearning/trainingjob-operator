@@ -1,0 +1,29 @@
+apiVersion: "elasticdeeplearning.ai/v1"
+kind: "AITrainingJob"
+metadata:
+  name: "paddle-mnist"
+spec:
+  cleanPodPolicy: All
+  restartingExitCode: 137,128
+  replicaSpecs:
+    trainer:
+      replicas: 1
+      completePolicy: All
+      failPolicy: Rank0
+      restartLimit: 1
+      restartPolicy: OnNodeFailWithExitCode
+      template:
+        spec:
+          hostNetwork: true
+          restartPolicy: Never
+          containers:
+            - name: "aitj-trainer"
+              image: "hub.baidubce.com/paddlepaddle/book"
+              ports:
+                - name: "aitj-24446"
+                  containerPort: 24446
+              command: ["/bin/bash"]
+              args: ["-c", "python /book/02.recognize_digits/train.py"]
+              resources:
+                limits: {cpu: 1.0, memory: '1.0Gi'}
+                requests: { cpu: 1.0, memory: '1.0Gi'}
