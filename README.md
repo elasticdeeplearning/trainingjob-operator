@@ -29,7 +29,7 @@ Using k8s native pod template, we do not implement pserver job and trainer job s
 ## Life cycle and state transition diagram
 ![avatar](https://github.com/elasticdeeplearning/trainingjob-operator/blob/d8c31bfe88c270f12a444a49b6b485312f7a05a7/docs/diagrams/life_cycle_and_state_transition.png?raw=true)
 
-The state transition diagram
+The state transition diagram:
 + Fault tolerance of container creation failure: when the container creation of pod fails, within the number of retries, the operator will automatically delete the pod, let the pod reschedule, and expose the container creation information to the user through job information
 
 + Fault tolerance of pod failure: when pod fails, within the number of retries, the operator will automatically delete the pod and let the pod reschedule, and expose the pod failure and creation information to the user through job information
