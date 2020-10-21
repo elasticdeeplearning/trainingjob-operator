@@ -71,6 +71,8 @@ When the core DNS is deployed, each pod uses the host network. Each pod correspo
 
 + Headless service: the cluster IP of the headless service is none, and the headless service does not perform load balancing and returns IP directly according to a record
 
+> Containers' name and container ports' name in pod must be prefixed with 'aitj-'
+
 ## Environment variable
 | Variable name | description | example |
 | :------| :------| :------|
