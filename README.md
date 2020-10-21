@@ -47,19 +47,22 @@ The state transition diagram
 
 + Preemption interface: call the interface to add the preempted annotation to the job. The operator will delete the job and set it to the preempted state when it detects the annotation. After all the pods are deleted, it will be set to the preempted state. (depending on the internal version scheduler, it will not be available for the time being, and it will open source the scheduler later.)
 	+ EndPolicy
-
+		```
 		Any: the group state changes according to the state of any member in the group;
 		Rank0: the group state changes according to the rank0 member state in the group;
 		All: the group status changes according to all pods.
+		```
 	+ RestartScope
-
+		```
 		Pod: When restarting, only restart the pod;
 		Replica: When restarting, restart all pods of the replica;
 		All: When restarting, restart all pods of the job.
+		```
 	+ CleanPodPolicy
-
+		```
 		CleanPodPolicyAll: Clean all pods;
 		CleanPodPolicyNone: Do not clean pods.
+		```
 
 ## Pod discovery strategy
 ![avatar](https://github.com/elasticdeeplearning/trainingjob-operator/blob/d8c31bfe88c270f12a444a49b6b485312f7a05a7/docs/diagrams/pod_discovery_strategy.png?raw=true)
