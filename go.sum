@@ -29,8 +29,8 @@ github.com/coreos/go-semver v0.3.0 h1:wkHLiw0WNATZnSG7epLsujiMCgPAc9xhjJ4tgnAxmf
 github.com/coreos/go-semver v0.3.0/go.mod h1:nnelYz7RCh+5ahJtPPxZlU+153eP4D4r3EedlOD2RNk=
 github.com/coreos/go-systemd v0.0.0-20180201102105-176f85496f4e h1:Ug6mBD9bXZ40KoHHvg4vH7EcJAlm6y43MTrO7Mzv7gg=
 github.com/coreos/go-systemd v0.0.0-20180201102105-176f85496f4e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
-github.com/coreos/pkg v0.0.0-20160727233714-3ac0863d7ac h1:w01sHbSV7G60T5n+8AiLGi9eciuXp687ufXPvB9dUUQ=
-github.com/coreos/pkg v0.0.0-20160727233714-3ac0863d7ac/go.mod h1:E3G3o1h8I7cfcXa63jLwjI0eiQQMgzzUDFVpN/nH/eA=
+github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f h1:lBNOc5arjvs8E5mO2tbpBpLoyyu8B6e44T7hJy6potg=
+github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f/go.mod h1:E3G3o1h8I7cfcXa63jLwjI0eiQQMgzzUDFVpN/nH/eA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -161,7 +161,6 @@ github.com/kubernetes-sigs/kube-batch v0.4.2 h1:CcFsYiHz1d9adH/jz7nFmjkdZnkPoq9o
 github.com/kubernetes-sigs/kube-batch v0.4.2/go.mod h1:UI2ZUDvosfoXEO3dbyttgTBXsYMSvqBJ7CL84giPlxQ=
 github.com/kubernetes/api v0.0.0-20190222213804-5cb15d344471 h1:arxwmCNOF7deAm6SuG3pBDAKPrs4/PJ5fsSvTc41GEk=
 github.com/kubernetes/api v0.0.0-20190222213804-5cb15d344471/go.mod h1:o5K7QWn2BV3MxynyVmAM1hhJxCL/FTrSymRIVwXDw58=
-github.com/kubernetes/code-generator v0.0.0-20181117043124-c2090bec4d9b/go.mod h1:GXXF2gdS/LDGLo7HilXGuIQfo5nLQDhB4eUn/2UMPnk=
 github.com/kubernetes/kube-openapi v0.0.0-20180719232738-d8ea2fe547a4 h1:Eivl3ga1o75VOk5L1hS/ARWe66fmbc63ieOobAvCWGU=
 github.com/kubernetes/kube-openapi v0.0.0-20180719232738-d8ea2fe547a4/go.mod h1:yc69piAq6DZCX1Cett9uZEiB1Lyw4TVy4E58dGKwHFc=
 github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329 h1:2gxZ0XQIU/5z3Z3bUBu+FXuk2pFbkN6tcwi/pjyaDic=

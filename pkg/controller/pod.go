@@ -8,6 +8,7 @@ import (
 	"time"
 
 	trainingjobv1 "github.com/elasticdeeplearning/trainingjob-operator/pkg/apis/aitrainingjob/v1"
+	"github.com/kubeflow/common/job_controller"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -17,7 +18,6 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/klog"
 	"k8s.io/kubernetes/pkg/controller"
-	"github.com/kubeflow/common/job_controller"
 )
 
 func (tc *TrainingJobController) addPod(obj interface{}) {
@@ -216,14 +216,14 @@ func (tc *TrainingJobController) reconcilePods(
 					(spec.RestartLimit != nil && job.Status.RestartCountes[rtype] < *spec.RestartLimit) {
 					updateRestartCount(job, rtype)
 					msg = fmt.Sprintf("restart times is %d, %s ", job.Status.RestartCountes[rtype], msg)
-					// Restart the pod 
+					// Restart the pod
 					if spec.RestartScope == trainingjobv1.RestartScopePod {
 						klog.Warningf("According to restartscope, need to restart the pod: %v.%v", pod.Namespace, pod.Name)
 						deletepod(pod.Namespace, pod.Name, job)
 						updateTrainingJobReplicaStatuses(job, rtype, replicaPods)
 						return nil, trainingjobv1.TrainingJobPhaseRestarting, msg
 					}
-					// Restart the replica pods 
+					// Restart the replica pods
 					if spec.RestartScope == trainingjobv1.RestartScopeReplica {
 						klog.Warningf("According to restartscope, need to restart all pods of the replica: %v", rtype)
 						for _, podSlice := range podSlices {
@@ -234,9 +234,9 @@ func (tc *TrainingJobController) reconcilePods(
 						updateTrainingJobReplicaStatuses(job, rtype, replicaPods)
 						return nil, trainingjobv1.TrainingJobPhaseRestarting, msg
 					}
-					// Restart all pods 
+					// Restart all pods
 					if spec.RestartScope == trainingjobv1.RestartScopeAll {
-						klog.Warningf("According to restartscope, need to restart all pods", )
+						klog.Warningf("According to restartscope, need to restart all pods")
 						for _, pod := range pods {
 							deletepod(pod.Namespace, pod.Name, job)
 						}
@@ -399,7 +399,7 @@ func (tc *TrainingJobController) reconcileContainers(
 				message = fmt.Sprintf("%s, %s", pod.Status.Reason, pod.Status.Message)
 			}
 		}
-		klog.Infof("message %v",message)
+		klog.Infof("message %v", message)
 		phase = trainingjobv1.TrainingJobPhaseFailed
 		return phase, isRestart, message
 	}
@@ -571,27 +571,27 @@ func (tc *TrainingJobController) setEnv(
 		replicaName := strings.ToUpper(string(rt))
 		hostsEnv = append(hostsEnv,
 			[]corev1.EnvVar{
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_INSTANCES", replicaName),
 					Value: strings.Join(instances, ","),
 				},
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_INSTANCES_NUM", replicaName),
 					Value: strconv.Itoa(len(instances)),
 				},
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_PORTS", replicaName),
 					Value: strings.Join(portsStr, ","),
 				},
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_PORTS_NUM", replicaName),
 					Value: strconv.Itoa(len(portsStr)),
 				},
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_HOSTS", replicaName),
 					Value: strings.Join(hosts, ","),
 				},
-				corev1.EnvVar{
+				{
 					Name:  fmt.Sprintf("%s_HOSTS_NUM", replicaName),
 					Value: strconv.Itoa(len(hosts)),
 				},
@@ -599,29 +599,29 @@ func (tc *TrainingJobController) setEnv(
 	}
 	hostsEnv = append(hostsEnv,
 		[]corev1.EnvVar{
-			corev1.EnvVar{
+			{
 				Name:  trainingjobv1.TrainingJobReplicaNameEnv,
 				Value: rtype,
 			},
-			corev1.EnvVar{
+			{
 				Name:  trainingjobv1.TrainingJobReplicaIndexEnv,
 				Value: index,
 			},
-			corev1.EnvVar{
+			{
 				Name:  trainingjobv1.TrainingJobReplicaRestartCountEnv,
 				Value: restartCount,
 			},
-			corev1.EnvVar{
+			{
 				Name: trainingjobv1.TrainingJobServiceEnv,
 				Value: fmt.Sprintf("%v.%v",
 					tc.GenGeneralName(job.Name, rtype, index),
 					job.Namespace),
 			},
-			corev1.EnvVar{
+			{
 				Name:  trainingjobv1.TrainingJobNameEnv,
 				Value: job.Name,
 			},
-			corev1.EnvVar{
+			{
 				Name:  trainingjobv1.TrainingJobNamespaceEnv,
 				Value: job.Namespace,
 			},
@@ -651,46 +651,50 @@ func (tc *TrainingJobController) setEnv(
 	return nil
 }
 
+// FilterPodsForReplicaType returns the pods with type replicaType
 func (tc *TrainingJobController) FilterPodsForReplicaType(pods []*corev1.Pod, replicaType string) ([]*corev1.Pod, error) {
 	var result []*corev1.Pod
 
 	replicaSelector := &metav1.LabelSelector{
-		MatchLabels: make(map[string]string),
+		MatchLabels: map[string]string{
+			trainingjobv1.TrainingJobReplicaName: replicaType,
+		},
 	}
-
-	replicaSelector.MatchLabels[trainingjobv1.TrainingJobReplicaName] = replicaType
 
 	for _, pod := range pods {
 		selector, err := metav1.LabelSelectorAsSelector(replicaSelector)
 		if err != nil {
 			return nil, err
 		}
-		if !selector.Matches(labels.Set(pod.Labels)) {
-			continue
+		if selector.Matches(labels.Set(pod.Labels)) {
+			result = append(result, pod)
 		}
-		result = append(result, pod)
 	}
 	return result, nil
 }
 
+// GetPodSlices slices pods based on their index label.
+// The ith element in the returned slice is a slice of pods with index i.
 func (tc *TrainingJobController) GetPodSlices(pods []*corev1.Pod, replicas int) [][]*corev1.Pod {
 	podSlices := make([][]*corev1.Pod, replicas)
 	for _, pod := range pods {
-		if _, ok := pod.Labels[trainingjobv1.TrainingJobReplicaIndex]; !ok {
+		indexstr, ok := pod.Labels[trainingjobv1.TrainingJobReplicaIndex]
+		if !ok {
 			klog.Warning("The pod do not have the index label.")
 			continue
 		}
-		index, err := strconv.Atoi(pod.Labels[trainingjobv1.TrainingJobReplicaIndex])
+		index, err := strconv.Atoi(indexstr)
 		if err != nil {
 			klog.Warningf("Error when strconv.Atoi: %v", err)
 			continue
 		}
 		if index < 0 || index >= replicas {
 			klog.Warningf("The label index is not expected: %d", index)
-		} else {
-			klog.V(4).Infof("index %d, pod %v", index, pod.Name)
-			podSlices[index] = append(podSlices[index], pod)
+			continue
 		}
+
+		klog.V(4).Infof("index %d, pod %v", index, pod.Name)
+		podSlices[index] = append(podSlices[index], pod)
 	}
 	return podSlices
 }

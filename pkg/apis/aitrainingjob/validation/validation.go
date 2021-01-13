@@ -2,13 +2,14 @@ package validation
 
 import (
 	"fmt"
+
 	trainingjobv1 "github.com/elasticdeeplearning/trainingjob-operator/pkg/apis/aitrainingjob/v1"
-	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog"
 )
 
 // ValidateV1TrainingJobSpec checks that the v1.Trainingjob is valid.
-func ValidateV1TrainingJobSpec(job *trainingjobv1.Trainingjob) error {
-	return validateV1ReplicaSpecs(job.ReplicaSpecs)
+func ValidateV1TrainingJobSpec(jobSpec *trainingjobv1.TrainingJobSpec) error {
+	return validateV1ReplicaSpecs(jobSpec.ReplicaSpecs)
 }
 
 func validateV1ReplicaSpecs(specs map[trainingjobv1.ReplicaName]*trainingjobv1.ReplicaSpec) error {
@@ -23,7 +24,7 @@ func validateV1ReplicaSpecs(specs map[trainingjobv1.ReplicaName]*trainingjobv1.R
 		for _, container := range value.Template.Spec.Containers {
 			if container.Image == "" {
 				msg := fmt.Sprintf("Trainingjob is not valid: Image is undefined in the container of %v", rType)
-				log.Error(msg)
+				klog.Error(msg)
 				return fmt.Errorf(msg)
 			}
 		}
