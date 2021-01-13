@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/spf13/pflag"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apiserver/pkg/apis/config"
 	"k8s.io/kubernetes/pkg/client/leaderelectionconfig"
 )
